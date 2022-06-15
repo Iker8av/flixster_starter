@@ -1,5 +1,3 @@
-
-
 const imageBaseUrl = 'https://image.tmdb.org/t/p'
 
 // Example image tag
@@ -109,19 +107,3 @@ const movies = [
    voteAverage: 8.3
    }
 ];
-
-window.onload = function () {
-    const gridEl = document.getElementById("grid-container")
-
-    movies.forEach(movie => {
-        gridEl.innerHTML += `
-    <article class="grid-item">
-        <img src="${imageBaseUrl}/w342${movie.posterPath}" alt="${movie.title}" title="${movie.title}">
-        <div>
-            <p>${movie.title}</p>
-            <p>Rating: <span>${movie.voteAverage}</span></p>
-        </div>
-    </article>
-    `
-    })
-}
