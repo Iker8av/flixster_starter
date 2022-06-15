@@ -1,9 +1,5 @@
-
-
 const imageBaseUrl = 'https://image.tmdb.org/t/p'
-
-// Example image tag
-//  <img class="movie-poster" src="${imageBaseUrl}/w342${movie.posterPath}" alt="${movie.title}" title="${movie.title}"/>
+let forRange = 12;
 
 const movies = [
    {
@@ -110,18 +106,42 @@ const movies = [
    }
 ];
 
-window.onload = function () {
-    const gridEl = document.getElementById("grid-container")
+const searchInput = document.querySelector(".search-input")
 
-    movies.forEach(movie => {
+function showMovies() {
+    const gridEl = document.getElementById("movies-grid")
+
+    gridEl.innerHTML = ``
+
+    for (let i = 0; i < forRange; i++)  {
         gridEl.innerHTML += `
-    <article class="grid-item">
-        <img src="${imageBaseUrl}/w342${movie.posterPath}" alt="${movie.title}" title="${movie.title}">
+    <article class="movie-card">
+        <img class="movie-poster" src="${imageBaseUrl}/w342${movies[i].posterPath}" alt="${movies[i].title}" title="${movies[i].title}">
         <div>
-            <p>${movie.title}</p>
-            <p>Rating: <span>${movie.voteAverage}</span></p>
+            <p class="movie-title">${movies[i].title}</p>
+            <p>Rating: <span class="movie-votes">${movies[i].voteAverage}</span></p>
         </div>
     </article>
     `
-    })
+    }
+}
+
+function showMore(){
+    forRange += 6
+
+    if (forRange > movies.length){
+        forRange = movies.length
+    }
+
+    showMovies()
+}
+
+function searchMovie(){
+    console.log("Typing...")
+}
+
+window.onload = function () {
+    showMovies()
+    searchInput.addEventListener('input', searchMovie)
+
 }
