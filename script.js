@@ -108,7 +108,7 @@ const movies = [
 
 const searchInput = document.querySelector(".search-input")
 
-function showMovies() {
+function showMovies(moviesList) {
     const gridEl = document.getElementById("movies-grid")
 
     gridEl.innerHTML = ``
@@ -116,10 +116,10 @@ function showMovies() {
     for (let i = 0; i < forRange; i++)  {
         gridEl.innerHTML += `
     <article class="movie-card">
-        <img class="movie-poster" src="${imageBaseUrl}/w342${movies[i].posterPath}" alt="${movies[i].title}" title="${movies[i].title}">
+        <img class="movie-poster" src="${imageBaseUrl}/w342${moviesList[i].posterPath}" alt="${moviesList[i].title}" title="${moviesList[i].title}">
         <div>
-            <p class="movie-title">${movies[i].title}</p>
-            <p>Rating: <span class="movie-votes">${movies[i].voteAverage}</span></p>
+            <p class="movie-title">${moviesList[i].title}</p>
+            <p>Rating: <span class="movie-votes">${moviesList[i].voteAverage}</span></p>
         </div>
     </article>
     `
@@ -133,15 +133,26 @@ function showMore(){
         forRange = movies.length
     }
 
-    showMovies()
+    showMovies(movies)
 }
 
 function searchMovie(){
     console.log("Typing...")
 }
 
-window.onload = function () {
-    showMovies()
-    searchInput.addEventListener('input', searchMovie)
+function searchFilter(){
+    const newListMov = []
 
+    for (let i = 0; i < forRange; i++)  {
+        if (movies[i].title.includes(searchInput.value)){
+            newListMov.push(movies[i])
+        }
+    }
+
+    showMovies(newListMov)
+}
+
+window.onload = function () {
+    showMovies(movies)
+    searchInput.addEventListener('input', searchFilter)
 }
