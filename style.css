@@ -172,7 +172,15 @@ header input{
     bottom: 25px;
 }
 
-.eraseSearch{
+.searchRequest{
+    color: white;
+}
+
+.close-search-btn{
+    width: 100px;
+    height: 25px;
+    background-color: redlutkhfffcttvuvvcitjgbttdnugrkcgj;
+    color: white;
     border-radius: 10px;
     border-style: none;
     cursor: pointer;
