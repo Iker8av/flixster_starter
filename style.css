@@ -3,6 +3,7 @@
 :root{
     --bgColor: #ffffff;
     --bg2Color:rgb(255, 255, 255);
+    --bg3Color: rgba(185, 185, 185, 0.3);
     --titleColor: #dfdfdf;
     --footerColor: #e9e9e9;
 
@@ -16,6 +17,26 @@ html {
 body {
     font-family: 'Roboto', sans-serif;
     text-align: center;
+    margin: 0;
+}
+
+.searchInfo{
+    display: none;
+    justify-content: center;
+}
+
+.searchInfo > span{
+    display: block;
+    margin: 10px;
+}
+
+.searchInfo > button{
+    background-color: red;
+    color: white;
+    width: 75px;
+    height: 30px;
+    margin: 10px;
+    cursor: pointer;
 }
 
 header{
@@ -38,15 +59,25 @@ header input{
     height: 30px;
 }
 
-
 .movies-grid{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     gap: 30px;
-    margin: 25px;
+    margin: 25px 75px;
+}
+
+.background{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg3Color);
+    position: fixed;
+    top: 0;
 }
 
 .movie-card{
+    width: 250px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -54,6 +85,23 @@ header input{
     background-color: var(--bg2Color);
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: all .2s ease-in-out;
+}
+
+.movie-card:hover{
+    transform: scale(1.1);
+}
+
+.movie-card div{
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes hoverCard {
+    100% {
+        width: 300px;
+        height: 450px;
+    }
 }
 
 .movie-card img{
@@ -65,7 +113,68 @@ header input{
     width: var(--imageSize);
 }
 
-button{
+.movie-card-open{
+    width: 300px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    background-color: var(--bg2Color);
+    border-radius: 15px;
+    display: none;
+    width: 60%;
+    height: auto;
+    position: fixed;
+    top: 25%;
+    left: 20%;
+}
+
+.movie-card-open img{
+    width: var(--imageSize);
+}
+
+.movie-card-open p:nth-child(1){
+    font-weight: bold;
+    width: var(--imageSize);
+}
+
+.movie-card-open > div{
+    margin: 25px;
+    display: flex;
+    flex-direction: row;
+}
+
+.movie-card-open > div > div{
+    margin: 25px;
+    text-align: left;
+}
+
+.movie-card-open > div > div p{
+    width: inherit;
+}
+
+.closePopup{
+    width: 100px;
+    height: 50px;
+    background-color: red;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-style: none;
+    border-radius: 10px;
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+}
+
+.eraseSearch{
+    border-radius: 10px;
+    border-style: none;
+    cursor: pointer;
+}
+
+body > button {
     width: 200px;
     height: 50px;
     border-style: none;
@@ -78,14 +187,21 @@ footer *{
 }
 
 footer{
+    display: flex;
+    flex-direction: row;
     background-color: var(--footerColor);
     padding: 25px;
+    justify-content: center;
 }
 
-@media only screen and (max-width: 1500px){
-    .movies-grid{
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    }
+footer p{
+    display: inline;
+    font-weight: bold;
+}
+
+footer img{
+    width: 80px;
+    margin: 0 15px;
 }
 
 @media only screen and (max-width: 1300px){
@@ -101,6 +217,12 @@ footer{
 }
 
 @media only screen and (max-width: 900px){
+    .movie-card-open > div{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
     .movies-grid{
         grid-template-columns: 1fr 1fr;
     }
@@ -109,5 +231,9 @@ footer{
 @media only screen and (max-width: 700px){
     .movies-grid{
         grid-template-columns: 1fr;
+    }
+
+    header input{
+        width: 250px;
     }
 }

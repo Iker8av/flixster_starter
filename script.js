@@ -1,158 +1,144 @@
 const imageBaseUrl = 'https://image.tmdb.org/t/p'
-let forRange = 12;
-
-const movies = [
-   {
-   id: 338953,
-   posterPath: "/8ZbybiGYe8XM4WGmGlhF0ec5R7u.jpg",
-   title: "Fantastic Beasts: The Secrets of Dumbledore",
-   voteAverage: 6.9
-   },
-   {
-   id: 526896,
-   posterPath: "/6JjfSchsU6daXk2AKX8EEBjO3Fm.jpg",
-   title: "Morbius",
-   voteAverage: 6.4
-   },
-   {
-   id: 752623,
-   posterPath: "/neMZH82Stu91d3iqvLdNQfqPPyl.jpg",
-   title: "The Lost City",
-   voteAverage: 6.8
-   },
-   {
-   id: 675353,
-   posterPath: "/6DrHO1jr3qVrViUO6s6kFiAGM7.jpg",
-   title: "Sonic the Hedgehog 2",
-   voteAverage: 7.7
-   },
-   {
-   id: 639933,
-   posterPath: "/zhLKlUaF1SEpO58ppHIAyENkwgw.jpg",
-   title: "The Northman",
-   voteAverage: 7.3
-   },
-   {
-   id: 818397,
-   posterPath: "/QaNLpq3Wuu2yp5ESsXYcQCOpUk.jpg",
-   title: "Memory",
-   voteAverage: 7.3
-   },
-   {
-   id: 507086,
-   posterPath: "/kAVRgw7GgK1CfYEJq8ME6EvRIgU.jpg",
-   title: "Jurassic World Dominion",
-   voteAverage: 6.7
-   },
-   {
-   id: 453395,
-   posterPath: "/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg",
-   title: "Doctor Strange in the Multiverse of Madness",
-   voteAverage: 7.4
-   },
-   {
-   id: 831946,
-   posterPath: "/cpWUtkcgRKeauhTyVMjYHxAutp4.jpg",
-   title: "Interceptor",
-   voteAverage: 6.3
-   },
-   {
-   id: 610150,
-   posterPath: "/rugyJdeoJm7cSJL1q4jBpTNbxyU.jpg",
-   title: "Dragon Ball Super: Super Hero",
-   voteAverage: 6.8
-   },
-   {
-   id: 414906,
-   posterPath: "/74xTEgt7R36Fpooo50r9T25onhq.jpg",
-   title: "The Batman",
-   voteAverage: 7.8
-   },
-   {
-   id: 628900,
-   posterPath: "/rJPGPZ5soaG27MK90oKpioSiJE2.jpg",
-   title: "The Contractor",
-   voteAverage: 6.6
-   },
-   {
-   id: 629542,
-   posterPath: "/7qop80YfuO0BwJa1uXk1DXUUEwv.jpg",
-   title: "The Bad Guys",
-   voteAverage: 7.8
-   },
-   {
-   id: 825808,
-   posterPath: "/g2n1lFIFXC0lpG32ysUhFi0Uz61.jpg",
-   title: "See for Me",
-   voteAverage: 6
-   },
-   {
-   id: 763285,
-   posterPath: "/zT5ynZ0UR6HFfWQSRf2uKtqCyWD.jpg",
-   title: "Ambulance",
-   voteAverage: 7
-   },
-   {
-   id: 648579,
-   posterPath: "/bmxCAO0tz79xn40swJAEIJPRnC1.jpg",
-   title: "The Unbearable Weight of Massive Talent",
-   voteAverage: 7.3
-   },
-   {
-   id: 361743,
-   posterPath: "/wxP2Mzv9CdjOK6t4dNnFGqIQl0V.jpg",
-   title: "Top Gun: Maverick",
-   voteAverage: 8.3
-   }
-];
+let forRange = 10;
+let movieCards = document.getElementsByClassName("movie-card");
 
 const searchInput = document.querySelector(".search-input")
+const searchInfo = document.querySelector(".searchInfo")
+const searchRequest = document.querySelector(".searchRequest")
+const showMoreButton = document.querySelector(".load-more-movies-btn")
 
-function showMovies(moviesList) {
+const getData = async () => {
+    console.log('getData')
+    let res = await fetch("https://api.themoviedb.org/3/movie/top_rated?api_key=3569880a85d6d569cc2dad2e4ce9a58c");
+    let data = await res.json()
+    return data.results
+}
+
+async function showMovies() {
+    console.log('showMovies')
     const gridEl = document.getElementById("movies-grid")
 
+    moviesList = await getData()
     gridEl.innerHTML = ``
 
     for (let i = 0; i < forRange; i++)  {
         gridEl.innerHTML += `
     <article class="movie-card">
-        <img class="movie-poster" src="${imageBaseUrl}/w342${moviesList[i].posterPath}" alt="${moviesList[i].title}" title="${moviesList[i].title}">
+        <img class="movie-poster" src="${imageBaseUrl}/w342${moviesList[i].poster_path}" alt="${moviesList[i].title}" title="${moviesList[i].title}">
         <div>
             <p class="movie-title">${moviesList[i].title}</p>
-            <p>Rating: <span class="movie-votes">${moviesList[i].voteAverage}</span></p>
+            <p>Rating: <span class="movie-votes">${moviesList[i].vote_average}</span></p>
         </div>
     </article>
     `
     }
+
+    movieCards = document.getElementsByClassName("movie-card")
+
+    for (let i = 0; i < movieCards.length; i++) {
+        movieCards[i].addEventListener('click', function() {
+            console.log('click handler')
+            showDetails(moviesList[i])
+        })
+    }
 }
 
-function showMore(){
-    forRange += 6
+async function showMore(){
+    forRange += 5
 
-    if (forRange > movies.length){
-        forRange = movies.length
+    moviesList = await getData()
+
+    if (forRange >= moviesList.length){
+        forRange = moviesList.length
+        showMoreButton.style.display = "none"
     }
 
-    showMovies(movies)
+    showMovies()
 }
 
-function searchMovie(){
-    console.log("Typing...")
-}
+async function searchFilter(){
+    const gridEl = document.getElementById("movies-grid")
 
-function searchFilter(){
     const newListMov = []
+    moviesList = await getData()
 
     for (let i = 0; i < forRange; i++)  {
-        if (movies[i].title.includes(searchInput.value)){
-            newListMov.push(movies[i])
+        if (moviesList[i].title.includes(searchInput.value)){
+            newListMov.push(moviesList[i])
         }
     }
 
-    showMovies(newListMov)
+    gridEl.innerHTML = ``
+
+    for (let i = 0; i < newListMov.length; i++)  {
+        gridEl.innerHTML += `
+    <article class="movie-card">
+        <img class="movie-poster" src="${imageBaseUrl}/w342${newListMov[i].poster_path}" alt="${newListMov[i].title}" title="${newListMov[i].title}">
+        <div class="movieInfo">
+            <p class="movie-title">${newListMov[i].title}</p>
+            <p>Rating: <span class="movie-votes">${newListMov[i].vote_average}</span></p>
+        </div>
+    </article>
+    `
+    }
+
+    movieCards = document.getElementsByClassName("movie-card")
+
+    for (let i = 0; i < newListMov.length; i++) {
+        movieCards[i].addEventListener('click', function() {
+            console.log('click handler')
+            showDetails(newListMov[i])
+        })
+    }
 }
 
+function enterKeyPressed(event) {
+    if (event.keyCode == 13) {
+        console.log("Enter key is pressed");
+        searchFilter()
+
+        searchInfo.style.display = "block"
+
+        searchRequest.innerHTML = ``
+        searchRequest.innerHTML = `Results of: <h2 class="searchRequest">"${searchInput.value}"</h2>`
+
+        event.preventDefault()
+    }
+ }
+
+ function clearSearch(){
+    console.log('clearSearch')
+    searchInfo.style.display = "none"
+    showMovies()
+ }
+
+ function showDetails(movieInfo){
+    console.log('showDetails')
+    console.log(movieInfo)
+    document.querySelector(".background").style.display = "block";
+    document.querySelector(".movie-card-open").style.display = "block";
+    document.querySelector(".movie-card-open").innerHTML +=
+        `
+        <div class = "movieDetails">
+            <img class="movie-poster" src="${imageBaseUrl}/w342${movieInfo.poster_path}" alt="${movieInfo.title}" title="${movieInfo.title}">
+            <div class="movieInfo">
+                <p class="movie-title">${movieInfo.title}</p>
+                <p>Rating: <span class="movie-votes">${movieInfo.vote_average}</span></p>
+                <p>${movieInfo.overview}</p>
+                <button class="closePopup" onclick="hideDetails()">Close</button>
+            </div>
+        </div>
+    `
+ }
+
+ function hideDetails(){
+    console.log('hideDetails')
+    document.querySelector(".background").style.display = "none";
+    document.querySelector(".movie-card-open").style.display = "none";
+    document.querySelector(".movieDetails").remove()
+ }
+
 window.onload = function () {
-    showMovies(movies)
-    searchInput.addEventListener('input', searchFilter)
+    console.log('onload')
+    showMovies()
 }
