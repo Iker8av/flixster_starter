@@ -2,24 +2,25 @@ const imageBaseUrl = 'https://image.tmdb.org/t/p'
 let forRange = 10;
 let movieCards = document.getElementsByClassName("movie-card");
 
+let searchInputValue;
 const searchInput = document.querySelector(".search-input")
 const searchInfo = document.querySelector(".searchInfo")
 const searchRequest = document.querySelector(".searchRequest")
 const showMoreButton = document.querySelector(".load-more-movies-btn")
 
+let moviesList;
+
 const getData = async () => {
-    console.log('getData')
+
     let res = await fetch("https://api.themoviedb.org/3/movie/top_rated?api_key=3569880a85d6d569cc2dad2e4ce9a58c");
     let data = await res.json()
-    console.log(data)
-    return data.results
+    // return data.results
+    showMovies(data.results)
 }
 
-async function showMovies() {
-    console.log('showMovies')
+async function showMovies(moviesList) {
     const gridEl = document.getElementById("movies-grid")
 
-    moviesList = await getData()
     gridEl.innerHTML = ``
 
     for (let i = 0; i < forRange; i++)  {
@@ -38,7 +39,7 @@ async function showMovies() {
 
     for (let i = 0; i < movieCards.length; i++) {
         movieCards[i].addEventListener('click', function() {
-            console.log('click handler')
+
             showDetails(moviesList[i])
         })
     }
@@ -47,77 +48,75 @@ async function showMovies() {
 async function showMore(){
     forRange += 5
 
-    moviesList = await getData()
-
     if (forRange >= moviesList.length){
         forRange = moviesList.length
         showMoreButton.style.display = "none"
     }
-
-    showMovies()
+    if (searchInputValue != ""){
+        showMovies(moviesList)
+    }
 }
 
 async function searchFilter(){
     const gridEl = document.getElementById("movies-grid")
 
-    const newListMov = []
-    moviesList = await getData()
+    searchInputValue = searchInput.value
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=3569880a85d6d569cc2dad2e4ce9a58c&query=${searchInputValue}`
+    let res = await fetch(url);
+    let data = await res.json()
+    moviesList = data.results
+    showMovies(moviesList)
 
-    for (let i = 0; i < forRange; i++)  {
-        const initials = moviesList[i].title.slice(0, searchInput.value.length)
+    console.log(moviesList);
 
-        if (searchInput.value.toLowerCase() === initials.toLowerCase()){
-            newListMov.push(moviesList[i])
-        }
-    }
+    // gridEl.innerHTML = ``
 
-    gridEl.innerHTML = ``
+    // for (let i = 0; i < forRange; i++)  {
+    //     console.log('newListMov: ', newListMov);
+    //     gridEl.innerHTML += `
+    // <article class="movie-card">
+    //     <img class="movie-poster" src="${imageBaseUrl}/w342${newListMov[i].poster_path}" alt="${newListMov[i].title}" title="${newListMov[i].title}">
+    //     <div class="movieInfo">
+    //         <p class="movie-title">${newListMov[i].title}</p>
+    //         <p>Rating: <span class="movie-votes">${newListMov[i].vote_average}</span></p>
+    //     </div>
+    // </article>
+    // `
+    // }
 
-    for (let i = 0; i < newListMov.length; i++)  {
-        gridEl.innerHTML += `
-    <article class="movie-card">
-        <img class="movie-poster" src="${imageBaseUrl}/w342${newListMov[i].poster_path}" alt="${newListMov[i].title}" title="${newListMov[i].title}">
-        <div class="movieInfo">
-            <p class="movie-title">${newListMov[i].title}</p>
-            <p>Rating: <span class="movie-votes">${newListMov[i].vote_average}</span></p>
-        </div>
-    </article>
-    `
-    }
+    // movieCards = document.getElementsByClassName("movie-card")
 
-    movieCards = document.getElementsByClassName("movie-card")
+    // for (let i = 0; i < newListMov.length; i++) {
+    //     movieCards[i].addEventListener('click', function() {
 
-    for (let i = 0; i < newListMov.length; i++) {
-        movieCards[i].addEventListener('click', function() {
-            console.log('click handler')
-            showDetails(newListMov[i])
-        })
-    }
+    //         showDetails(newListMov[i])
+    //     })
+    // }
 }
 
 function enterKeyPressed(event) {
     if (event.keyCode == 13) {
-        console.log("Enter key is pressed");
+
         searchFilter()
 
         searchInfo.style.display = "block"
 
         searchRequest.innerHTML = ``
-        searchRequest.innerHTML = `Results of: <h2 class="searchRequest">"${searchInput.value}"</h2>`
+        searchRequest.innerHTML = `Results of: <h2 class="searchRequest">"${searchInputValue}"</h2>`
 
         event.preventDefault()
     }
  }
 
  function clearSearch(){
-    console.log('clearSearch')
+
     searchInfo.style.display = "none"
-    showMovies()
+    getData()
  }
 
  function showDetails(movieInfo){
-    console.log('showDetails')
-    console.log(movieInfo)
+
+
     document.querySelector(".background").style.display = "block";
     document.querySelector(".movie-card-open").style.display = "block";
     document.querySelector(".movie-card-open").innerHTML +=
@@ -135,13 +134,14 @@ function enterKeyPressed(event) {
  }
 
  function hideDetails(){
-    console.log('hideDetails')
+
     document.querySelector(".background").style.display = "none";
     document.querySelector(".movie-card-open").style.display = "none";
     document.querySelector(".movieDetails").remove()
  }
 
 window.onload = function () {
-    console.log('onload')
-    showMovies()
+
+    // showMovies()
+    getData()
 }
