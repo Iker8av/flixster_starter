@@ -1,13 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,700;1,400&display=swap');
 
 :root{
-    --bgColor: #ffffff;
-    --bg2Color:rgb(255, 255, 255);
-    --bg3Color: rgba(185, 185, 185, 0.3);
-    --titleColor: #dfdfdf;
-    --footerColor: #e9e9e9;
+    --bgColor: rgb(42, 35, 61);
+    --bg2Color:rgb(65, 62, 114);
+    --bg3Color: rgba(42, 35, 61, 0.6);
+    --titleColor: rgb(44, 42, 79);
+    --footerColor: rgb(52, 50, 94);
 
     --imageSize: 200px;
+}
+
+* p {
+    color: white;
 }
 
 html {
@@ -20,9 +24,19 @@ body {
     margin: 0;
 }
 
+h1 {
+    display: block;
+    font-size: 2.5em;
+    margin: 20px 90px;
+    padding: 25px;
+    font-weight: bold;
+    color: white;
+}
+
 .searchInfo{
     display: none;
     justify-content: center;
+    color: white;
 }
 
 .searchInfo > span{
@@ -43,25 +57,31 @@ header{
     display: flex;
     flex-direction: row;
     position: relative;
-    align-items: center;
-    margin: 0;
-    padding: 25px;
     background-color: var(--titleColor);
     width: 100%;
 }
 
-header input{
+.search-input{
     position: absolute;
     border-style: none;
+    color: white;
     border-radius: 10px;
+    background-color: var(--bg2Color);
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 0;
+    bottom: 0;
     right: 100px;
     width: 400px;
-    height: 30px;
+    height: 40px;
+    font-size: 16px;
 }
 
 .movies-grid{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    top: 0;
+    bottom: 0;
     gap: 30px;
     margin: 25px 75px;
 }
@@ -168,13 +188,17 @@ header input{
     bottom: 25px;
 }
 
-.eraseSearch{
+.close-search-btn{
     border-radius: 10px;
     border-style: none;
     cursor: pointer;
 }
 
-body > button {
+.load-more-movies-btn {
+    background-color: var(--bg2Color);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
     width: 200px;
     height: 50px;
     border-style: none;

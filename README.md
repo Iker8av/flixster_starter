@@ -69,10 +69,6 @@ I was going to make the Pop-up feature from another way because I did not want t
 ### Shout out
 
 Give a shout out to somebody from your cohort that especially helped you during your project. This can be a fellow peer, instructor, TA, mentor, etc.
-<<<<<<< HEAD
-=======
-My instructor Phineas
->>>>>>> 31fc3bd54335ea1dd27c1ccf7579458525fdb5be
 
 ### Notes
 
