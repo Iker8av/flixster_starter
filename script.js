@@ -11,6 +11,7 @@ const getData = async () => {
     console.log('getData')
     let res = await fetch("https://api.themoviedb.org/3/movie/top_rated?api_key=3569880a85d6d569cc2dad2e4ce9a58c");
     let data = await res.json()
+    console.log(data)
     return data.results
 }
 
@@ -63,7 +64,9 @@ async function searchFilter(){
     moviesList = await getData()
 
     for (let i = 0; i < forRange; i++)  {
-        if (moviesList[i].title.includes(searchInput.value)){
+        const initials = moviesList[i].title.slice(0, searchInput.value.length)
+
+        if (searchInput.value.toLowerCase() === initials.toLowerCase()){
             newListMov.push(moviesList[i])
         }
     }
