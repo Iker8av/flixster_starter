@@ -11,10 +11,9 @@ const showMoreButton = document.querySelector(".load-more-movies-btn")
 let moviesList;
 
 const getData = async () => {
-
     let res = await fetch("https://api.themoviedb.org/3/movie/top_rated?api_key=3569880a85d6d569cc2dad2e4ce9a58c");
     let data = await res.json()
-    // return data.results
+    moviesList = data.results
     showMovies(data.results)
 }
 
@@ -61,37 +60,13 @@ async function searchFilter(){
     const gridEl = document.getElementById("movies-grid")
 
     searchInputValue = searchInput.value
+    forRange = 10
+
     const url = `https://api.themoviedb.org/3/search/movie?api_key=3569880a85d6d569cc2dad2e4ce9a58c&query=${searchInputValue}`
     let res = await fetch(url);
     let data = await res.json()
     moviesList = data.results
     showMovies(moviesList)
-
-    console.log(moviesList);
-
-    // gridEl.innerHTML = ``
-
-    // for (let i = 0; i < forRange; i++)  {
-    //     console.log('newListMov: ', newListMov);
-    //     gridEl.innerHTML += `
-    // <article class="movie-card">
-    //     <img class="movie-poster" src="${imageBaseUrl}/w342${newListMov[i].poster_path}" alt="${newListMov[i].title}" title="${newListMov[i].title}">
-    //     <div class="movieInfo">
-    //         <p class="movie-title">${newListMov[i].title}</p>
-    //         <p>Rating: <span class="movie-votes">${newListMov[i].vote_average}</span></p>
-    //     </div>
-    // </article>
-    // `
-    // }
-
-    // movieCards = document.getElementsByClassName("movie-card")
-
-    // for (let i = 0; i < newListMov.length; i++) {
-    //     movieCards[i].addEventListener('click', function() {
-
-    //         showDetails(newListMov[i])
-    //     })
-    // }
 }
 
 function enterKeyPressed(event) {
@@ -109,9 +84,10 @@ function enterKeyPressed(event) {
  }
 
  function clearSearch(){
-
     searchInfo.style.display = "none"
+    searchInput.value = ""
     getData()
+    forRange = 10
  }
 
  function showDetails(movieInfo){
